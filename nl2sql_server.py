@@ -14,6 +14,7 @@ logger = logging.getLogger("nl2sql")
 # SQLite database file path
 SQLITE_DB_PATH = "chinook.sqlite"
 
+
 @asynccontextmanager
 async def app_lifespan(server: FastMCP) -> AsyncIterator[dict]:
   """Manage application lifecycle with type-safe context for SQLite"""

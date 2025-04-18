@@ -131,7 +131,7 @@ def fetch_yahoo_finance_chart(stock_ticker: str, interval: str = "1d", range_per
 @mcp.tool()
 def stock_price(stock_ticker: str, start_date: str = None, end_date: str = None) -> str:
   """
-  Returns historical stock price information for a given ticker and optional date range.
+  Tool to get historical stock price information for a given ticker and optional date range.
 
   Args:
       stock_ticker: Stock ticker symbol (e.g., "AAPL").
@@ -260,7 +260,7 @@ def stock_price(stock_ticker: str, start_date: str = None, end_date: str = None)
 
 @mcp.tool()
 def stock_info(stock_ticker: str) -> str:
-  """Fetches financial data from Yahoo Finance for a given stock ticker.
+  """Tool to fetch financial data from Yahoo Finance for a given stock ticker.
 
   Args:
       stock_ticker: Stock ticker symbol (e.g., "AAPL").
@@ -328,7 +328,7 @@ def stock_info(stock_ticker: str) -> str:
 @mcp.tool()
 def income_statement(stock_ticker: str, period: str = "quarterly") -> str:
     """
-    Returns the income statement for a given stock ticker, supporting quarterly or yearly data.
+    Tool to get the income statement for a given stock ticker, supporting quarterly or yearly data.
 
     Args:
         stock_ticker: Alphanumeric stock ticker symbol (e.g., "AAPL", "MSFT").

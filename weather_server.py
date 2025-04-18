@@ -42,57 +42,74 @@ Instructions: {props.get('instruction', 'No specific instructions provided')}
 
 @mcp.tool()
 async def get_alerts(state: str) -> str:
-  """Get weather alerts for a US state.
+  """
+  Tool to get active weather alerts for a US state.
 
   Args:
-          state: Two-letter US state code (e.g. CA, NY)
+      state: Two-letter US state code (e.g., "CA" for California, "NY" for New York).
+
+  Returns:
+      str: Formatted string with active weather alerts, or a message if none are found.
   """
-  url = f"{NWS_API_BASE}/alerts/active/area/{state}"
+  url = f"{NWS_API_BASE}/alerts/active/area/{state.upper()}"
   data = await make_nws_request(url)
 
   if not data or "features" not in data:
-    return "Unable to fetch alerts or no alerts found."
+      logger.warning(
+          f"Failed to fetch alerts or malformed response for state: {state}")
+      return "Unable to fetch alerts or no alerts found."
 
-  if not data["features"]:
-    return "No active alerts for this state."
+  features = data.get("features", [])
+  if not features:
+      logger.info(f"No active alerts for state: {state}")
+      return "No active alerts for this state."
 
-  alerts = [format_alert(feature) for feature in data["features"]]
+  alerts = [format_alert(feature) for feature in features]
+  logger.debug(f"Found {len(alerts)} alert(s) for state: {state}")
   return "\n---\n".join(alerts)
 
 
 @mcp.tool()
 async def get_forecast(latitude: float, longitude: float) -> str:
-  """Get weather forecast for a location.
+  """
+  Tool to get the weather forecast for a specific location.
 
   Args:
-            latitude: Latitude of the location
-            longitude: Longitude of the location
+      latitude: Latitude of the location.
+      longitude: Longitude of the location.
+
+  Returns:
+      str: Formatted string with the weather forecast for the next 5 periods, or an error message.
   """
-  # First get the forecast grid endpoint
+  # Get the forecast grid endpoint from NWS API
   points_url = f"{NWS_API_BASE}/points/{latitude},{longitude}"
   points_data = await make_nws_request(points_url)
 
-  if not points_data:
+  if not points_data or "properties" not in points_data or "forecast" not in points_data["properties"]:
+    logger.warning(
+        f"Failed to fetch forecast grid endpoint for lat={latitude}, lon={longitude}")
     return "Unable to fetch forecast data for this location."
 
   # Get the forecast URL from the points response
   forecast_url = points_data["properties"]["forecast"]
   forecast_data = await make_nws_request(forecast_url)
 
-  if not forecast_data:
+  if not forecast_data or "properties" not in forecast_data or "periods" not in forecast_data["properties"]:
+    logger.warning(
+        f"Failed to fetch detailed forecast for lat={latitude}, lon={longitude}")
     return "Unable to fetch detailed forecast."
 
   # Format the periods into a readable forecast
   periods = forecast_data["properties"]["periods"]
   forecasts = []
   for period in periods[:5]:  # Only show next 5 periods
-    forecast = f"""
-{period['name']}:
-Temperature: {period['temperature']}°{period['temperatureUnit']}
-Wind: {period['windSpeed']} {period['windDirection']}
-Forecast: {period['detailedForecast']}
-"""
-    forecasts.append(forecast)
+    forecast = (
+        f"{period['name']}:\n"
+        f"Temperature: {period['temperature']}°{period['temperatureUnit']}\n"
+        f"Wind: {period['windSpeed']} {period['windDirection']}\n"
+        f"Forecast: {period['detailedForecast']}\n"
+    )
+    forecasts.append(forecast.strip())
 
   return "\n---\n".join(forecasts)
 
