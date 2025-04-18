@@ -1,0 +1,16 @@
+{
+    "servers": {
+        "stock(local)": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "--directory",
+                "/home/ythuang/workspace/mcp-learn",
+                "stock.py",
+                "-t",
+                "sse"
+            ]
+        }
+    }
+}
