@@ -67,6 +67,8 @@ To connect to a stdio server:
 uv run client.py weather_server.py
 # OR
 uv run client.py stock_server.py
+# OR
+uv run client.py nl2sql_server.py
 ```
 
 To connect to an SSE server:
@@ -98,3 +100,13 @@ Type `quit` or `exit` to end your session.
 - `stock_info`: Get information about a company by ticker
 - `income_statement`: Get the quarterly income statement for a company
 - `tickers://search/`: Search for a stock ticker by company name
+
+### NL2SQL Server
+
+- `query_sql`: Execute a custom SQL query on the SQLite database
+- `list_tables`: List all tables in the SQLite database
+- `describe_table`: Get the structure of a specific table
+- `execute_nonquery`: Execute a non-query SQL statement (INSERT, UPDATE, DELETE, etc.)
+- `list_odbc_drivers`: List available ODBC drivers (returns static info for SQLite)
+- `database_info`: Get general information about the connected SQLite database
+
