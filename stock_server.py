@@ -1,5 +1,5 @@
 import argparse
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 import datetime
 import json
 import yfinance as yf
@@ -10,9 +10,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("stock")
 
-mcp = FastMCP("stock")
+stock_mcp = FastMCP("stock")
 
-@mcp.prompt()
+@stock_mcp.prompt()
 def stock_summary(stock_data: str) -> str:
   """Prompt template for summarising stock price"""
   return f"""You are a helpful financial assistant designed to summarise stock data.
@@ -128,7 +128,7 @@ def fetch_yahoo_finance_chart(stock_ticker: str, interval: str = "1d", range_per
     print(f"Error fetching chart data with yfinance: {e}")
     return None
 
-@mcp.tool()
+@stock_mcp.tool()
 def stock_price(stock_ticker: str, start_date: str = None, end_date: str = None) -> str:
   """
   Tool to get historical stock price information for a given ticker and optional date range.
@@ -258,7 +258,7 @@ def stock_price(stock_ticker: str, start_date: str = None, end_date: str = None)
   except Exception as e:
       return f"Error retrieving stock price for {stock_ticker}: {str(e)}"
 
-@mcp.tool()
+@stock_mcp.tool()
 def stock_info(stock_ticker: str) -> str:
   """Tool to fetch financial data from Yahoo Finance for a given stock ticker.
 
@@ -325,7 +325,7 @@ def stock_info(stock_ticker: str) -> str:
   except Exception as e:
       return f"Error retrieving stock information for {stock_ticker}: {str(e)}"
 
-@mcp.tool()
+@stock_mcp.tool()
 def income_statement(stock_ticker: str, period: str = "quarterly") -> str:
     """
     Tool to get the income statement for a given stock ticker, supporting quarterly or yearly data.
@@ -406,22 +406,11 @@ def income_statement(stock_ticker: str, period: str = "quarterly") -> str:
     except Exception as e:
         return f"Error retrieving income statement for {stock_ticker}: {str(e)}"
 
-@mcp.tool()
-def current_date() -> str:
-  """Returns the current date.
-  
-  Returns:
-      str: The current date in YYYY-MM-DD format
-      Example Response: "2023-07-25"
-  """
-  today = datetime.date.today()
-  return str(today)
-
 # Example usage:
 # To run the server with sse transport "uv run stock_server.py -t sse"
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="Stock server")
+  parser = argparse.ArgumentParser(description="stock mcp server")
   parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
                       help="MCP transport to use (stdio or sse)")
   args = parser.parse_args()
-  mcp.run(transport=args.transport)
+  stock_mcp.run(transport=args.transport)

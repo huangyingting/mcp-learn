@@ -1,6 +1,6 @@
 from typing import Any
 import httpx
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 import argparse
 import logging
 
@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("weather")
 
 # Initialize FastMCP server
-mcp = FastMCP("weather")
+weather_mcp = FastMCP("weather")
 
 # Constants
 NWS_API_BASE = "https://api.weather.gov"
@@ -40,7 +40,7 @@ Instructions: {props.get('instruction', 'No specific instructions provided')}
 """
 
 
-@mcp.tool()
+@weather_mcp.tool()
 async def get_alerts(state: str) -> str:
   """
   Tool to get active weather alerts for a US state.
@@ -69,7 +69,7 @@ async def get_alerts(state: str) -> str:
   return "\n---\n".join(alerts)
 
 
-@mcp.tool()
+@weather_mcp.tool()
 async def get_forecast(latitude: float, longitude: float) -> str:
   """
   Tool to get the weather forecast for a specific location.
@@ -116,8 +116,8 @@ async def get_forecast(latitude: float, longitude: float) -> str:
 # Example usage:
 # To run the server with sse transport "uv run weather_server.py -t sse"
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="Weather server")
+  parser = argparse.ArgumentParser(description="weather mcp server")
   parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
                       help="MCP transport to use (stdio or sse)")
   args = parser.parse_args()
-  mcp.run(transport=args.transport)
+  weather_mcp.run(transport=args.transport)

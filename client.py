@@ -3,7 +3,8 @@ import os
 from collections.abc import Sequence
 from contextlib import AsyncExitStack
 from dotenv import load_dotenv
-from mcp import ClientSession, StdioServerParameters, stdio_client
+from mcp import ClientSession
+from mcp.client.stdio import stdio_client, StdioServerParameters
 from mcp.client.sse import sse_client
 from openai import AzureOpenAI
 import logging
@@ -11,22 +12,24 @@ from colorama import Fore, Style, init as colorama_init
 
 colorama_init(autoreset=True)
 
-class ColorFormatter(logging.Formatter):
-    COLORS = {
-        logging.DEBUG: Fore.CYAN,
-        logging.INFO: Fore.GREEN,
-        logging.WARNING: Fore.YELLOW,
-        logging.ERROR: Fore.RED,
-        logging.CRITICAL: Fore.MAGENTA + Style.BRIGHT,
-    }
 
-    def format(self, record):
-        color = self.COLORS.get(record.levelno, "")
-        message = super().format(record)
-        return f"{color}{message}{Style.RESET_ALL}"
+class ColorFormatter(logging.Formatter):
+  COLORS = {
+      logging.DEBUG: Fore.CYAN,
+      logging.INFO: Fore.GREEN,
+      logging.WARNING: Fore.YELLOW,
+      logging.ERROR: Fore.RED,
+      logging.CRITICAL: Fore.MAGENTA + Style.BRIGHT,
+  }
+
+  def format(self, record):
+    color = self.COLORS.get(record.levelno, "")
+    message = super().format(record)
+    return f"{color}{message}{Style.RESET_ALL}"
 
 # import mlflow
 # mlflow.autolog()
+
 
 # Set up logging with color
 logger = logging.getLogger("client")
@@ -36,11 +39,11 @@ handler.setFormatter(ColorFormatter("%(levelname)s: %(message)s"))
 logger.handlers = [handler]
 
 
-
 load_dotenv()
 
 MODEL_NAME = "gpt-4o"
 MAX_TOKENS = 4096
+
 
 class MCPClient:
   def __init__(self):
@@ -74,7 +77,8 @@ class MCPClient:
 
     response = await self.session.list_tools()
     self.available_tools = response.tools
-    logger.debug(f"Connection to server with tools: {[tool.name for tool in self.available_tools]}")
+    logger.debug(
+        f"Connection to server with tools: {[tool.name for tool in self.available_tools]}")
 
   async def connect_to_sse_server(self, server_url: str):
     # Store the context managers so they stay alive
@@ -105,11 +109,11 @@ class MCPClient:
         }
         for tool in self.available_tools
     ]
-    
+
     # Recursive function to handle tool calls
     async def process_message():
       nonlocal messages
-      
+
       response = self.openai.chat.completions.create(
           model=MODEL_NAME,
           max_tokens=MAX_TOKENS,
@@ -118,14 +122,14 @@ class MCPClient:
       )
 
       message = response.choices[0].message
-      
+
       # If no tool calls, we're done
       if not message.tool_calls:
         return message.content
-      
+
       # Add the assistant message with tool calls to the conversation
       messages.append(message)
-      
+
       # Process each tool call
       for tool_call in message.tool_calls:
         tool_name = tool_call.function.name
@@ -148,13 +152,12 @@ class MCPClient:
                 "content": json.dumps(tool_result_contents),
             }
         )
-      
+
       # Recursively process the next message with updated context
       return await process_message()
-    
+
     # Start the recursive process
     return await process_message()
-
 
   async def chat_loop(self) -> None:
 

@@ -12,3 +12,6 @@ wheels/
 
 # MLflow
 mlruns/
+
+# Chainlit
+.chainlit/
