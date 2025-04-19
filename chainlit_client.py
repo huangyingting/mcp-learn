@@ -1,3 +1,5 @@
+# uv run chainlit run chainlit_client.py --port 9000
+
 import os
 import json
 import asyncio
@@ -83,7 +85,7 @@ class MCPClientWeb:
             openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
             openai.azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
             openai.api_type = "azure"
-            openai.api_version = os.getenv("OPENAI_API_VERSION")
+            openai.api_version = os.getenv("AZURE_OPENAI_API_VERSION")
 
             # Debug message - sending request to OpenAI
             await cl.Message(content=f"🔄 Sending request to OpenAI...", author="System").send()

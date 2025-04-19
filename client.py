@@ -41,7 +41,7 @@ logger.handlers = [handler]
 
 load_dotenv()
 
-MODEL_NAME = "gpt-4o"
+MODEL_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT") | "gpt-4o"
 MAX_TOKENS = 4096
 
 

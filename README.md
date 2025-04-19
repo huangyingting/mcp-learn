@@ -38,7 +38,7 @@ Create a `.env` file in the project root with your Azure OpenAI API credentials:
 ```
 AZURE_OPENAI_ENDPOINT=<your-azure-openai-endpoint>
 AZURE_OPENAI_API_KEY=<your-azure-openai-api-key>
-OPENAI_API_VERSION=<api-version>
+AZURE_OPENAI_API_VERSION=<api-version>
 ```
 
 ## Running the Examples
