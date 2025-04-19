@@ -25,15 +25,17 @@ class ColorFormatter(logging.Formatter):
         message = super().format(record)
         return f"{color}{message}{Style.RESET_ALL}"
 
-# Set up logging with color
-handler = logging.StreamHandler()
-handler.setFormatter(ColorFormatter("%(levelname)s: %(message)s"))
-logger = logging.getLogger("client")
-logger.handlers = [handler]
-logger.setLevel(logging.DEBUG)
-
 # import mlflow
 # mlflow.autolog()
+
+# Set up logging with color
+logger = logging.getLogger("client")
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setFormatter(ColorFormatter("%(levelname)s: %(message)s"))
+logger.handlers = [handler]
+
+
 
 load_dotenv()
 
