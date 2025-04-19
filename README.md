@@ -9,6 +9,7 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 - A client that connects to MCP servers and processes user queries
 - A weather information server that provides weather forecasts and alerts
 - A stock information server that provides stock prices and company information
+- A NL2SQL server that translates natural language queries to SQL
 
 ## Setup
 
@@ -21,7 +22,9 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 
 ```bash
 # Clone this repository
-git clone <repository-url>
+git clone https://github.com/yourusername/mcp-learn.git
+# or if using SSH
+# git clone git@github.com:yourusername/mcp-learn.git
 cd mcp-learn
 
 # Install dependencies

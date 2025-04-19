@@ -5,15 +5,14 @@ from collections.abc import AsyncIterator
 import logging
 import sys
 import asyncio
-from mcp.server.fastmcp import Context, FastMCP
+from fastmcp import Context, FastMCP
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("nl2sql")
 
 # SQLite database file path
-SQLITE_DB_PATH = "chinook.sqlite"
-
+SQLITE_DB_PATH = "servers/chinook.db"
 
 @asynccontextmanager
 async def app_lifespan(server: FastMCP) -> AsyncIterator[dict]:
@@ -38,10 +37,10 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[dict]:
       await asyncio.get_event_loop().run_in_executor(None, conn.close)
 
 # Create an MCP server with the lifespan
-mcp = FastMCP("nl2sql", lifespan=app_lifespan)
+nl2sql_mcp = FastMCP("nl2sql", lifespan=app_lifespan)
 
 
-@mcp.tool()
+@nl2sql_mcp.tool()
 async def query_sql(ctx: Context, query: str = None) -> str:
   """
   Tool to query the SQLite database with a custom query.
@@ -88,7 +87,7 @@ async def query_sql(ctx: Context, query: str = None) -> str:
     return f"Error: {str(e)}"
 
 
-@mcp.tool()
+@nl2sql_mcp.tool()
 async def list_tables(ctx: Context) -> str:
   """List all tables in the SQLite database that can be queried."""
   try:
@@ -110,7 +109,7 @@ async def list_tables(ctx: Context) -> str:
     return f"Error listing tables: {str(e)}"
 
 
-@mcp.tool()
+@nl2sql_mcp.tool()
 async def describe_table(ctx: Context, table_name: str) -> str:
   """
   Get the structure of a specific table in SQLite.
@@ -143,7 +142,7 @@ async def describe_table(ctx: Context, table_name: str) -> str:
     return f"Error describing table: {str(e)}"
 
 
-@mcp.tool()
+@nl2sql_mcp.tool()
 async def execute_nonquery(ctx: Context, sql: str) -> str:
   """
   Execute a non-query SQL statement (INSERT, UPDATE, DELETE, etc.) in SQLite.
@@ -178,13 +177,7 @@ async def execute_nonquery(ctx: Context, sql: str) -> str:
     return f"Error executing SQL: {str(e)}"
 
 
-@mcp.tool()
-async def list_odbc_drivers(ctx: Context) -> str:
-  """List available ODBC drivers on the system (not applicable for SQLite, returns static info)"""
-  return "SQLite does not require ODBC drivers. No drivers to list."
-
-
-@mcp.tool()
+@nl2sql_mcp.tool()
 async def database_info(ctx: Context) -> str:
   """Get general information about the connected SQLite database"""
   try:
@@ -217,8 +210,8 @@ async def database_info(ctx: Context) -> str:
     return f"Error getting database info: {str(e)}"
 
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="NL2SQL server")
+  parser = argparse.ArgumentParser(description="nl2sql server")
   parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
                       help="MCP transport to use (stdio or sse)")
   args = parser.parse_args()
-  mcp.run(transport=args.transport)
+  nl2sql_mcp.run(transport=args.transport)
