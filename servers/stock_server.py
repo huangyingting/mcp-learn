@@ -139,12 +139,9 @@ def stock_price(stock_ticker: str, start_date: str = None, end_date: str = None)
       end_date: Optional end date in YYYY-MM-DD format (e.g., "2023-07-25").
           - If both start_date and end_date are provided, returns prices for that range.
           - If neither is provided, returns prices for the last 7 days.
-      Example payloads: "NVDA" or "NVDA, 2023-07-01, 2023-07-25"
 
   Returns:
       str: Human-readable summary of stock price data.
-          - Example without dates: "Stock price over the last 7 days for NVDA: 2023-07-19: $100.21..."
-          - Example with date range: "Stock price for NVDA from 2023-07-01 to 2023-07-25: 2023-07-01: $98.45..."
   """
   try:
       # Validate stock ticker
@@ -260,70 +257,73 @@ def stock_price(stock_ticker: str, start_date: str = None, end_date: str = None)
 
 @stock_mcp.tool()
 def stock_info(stock_ticker: str) -> str:
-  """Tool to fetch financial data from Yahoo Finance for a given stock ticker.
-
-  Args:
-      stock_ticker: Stock ticker symbol (e.g., "AAPL").
-      modules: Comma-separated list of data modules to fetch.
-
-  Returns:
-      dict: Structured data similar to Yahoo Finance API.
-  """
-  try:
-      # Get stock information using yfinance
-      ticker = yf.Ticker(stock_ticker)
-      
-      # Extract relevant information
-      company_info = ticker.info
-      
-      # Select only the most relevant fields
-      relevant_keys = [
-          'shortName', 'longName', 'industry', 'sector', 'website', 
-          'marketCap', 'previousClose', 'open', 'dayLow', 'dayHigh',
-          'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'volume', 'averageVolume',
-          'dividendRate', 'dividendYield', 'trailingPE', 'forwardPE',
-          'city', 'state', 'country', 'fullTimeEmployees', 'longBusinessSummary'
-      ]
-      
-      # Format the information in a more readable way
-      formatted_info = []
-      
-      # First add company name and key financial info
-      if 'longName' in company_info:
-          formatted_info.append(f"Company: {company_info.get('longName')}")
-      elif 'shortName' in company_info:
-          formatted_info.append(f"Company: {company_info.get('shortName')}")
-          
-      # Add other key information
-      for key in relevant_keys:
-          if key in company_info and company_info[key] is not None:
-              # Format some fields specially
-              if key == 'marketCap':
-                  value = f"${company_info[key]/1000000000:.1f}B" if company_info[key] < 1000000000000 else f"${company_info[key]/1000000000000:.1f}T"
-                  formatted_info.append(f"Market Cap: {value}")
-              elif key == 'fiftyTwoWeekLow' and 'fiftyTwoWeekHigh' in company_info:
-                  formatted_info.append(f"52 Week Range: ${company_info['fiftyTwoWeekLow']:.2f} - ${company_info['fiftyTwoWeekHigh']:.2f}")
-              elif key == 'fiftyTwoWeekHigh':
-                  # Skip as it's handled with fiftyTwoWeekLow
-                  pass
-              elif key == 'dividendYield' and company_info[key]:
-                  formatted_info.append(f"Dividend Yield: {company_info[key]*100:.2f}%")
-              elif key == 'longBusinessSummary':
-                  formatted_info.append(f"\nBusiness Summary:\n{company_info[key]}")
-              elif key not in ['shortName', 'longName']:  # Avoid duplication
-                  # Format the key for better readability
-                  formatted_key = ' '.join(word.capitalize() for word in key.split('_'))
-                  formatted_key = ''.join(word[0].upper() + word[1:] for word in formatted_key.split())
-                  formatted_info.append(f"{formatted_key}: {company_info[key]}")
-      
-      if not formatted_info:
-          return f"No detailed information available for {stock_ticker}"
-          
-      return f"Background information for {stock_ticker}:\n" + "\n".join(formatted_info)
-  except AttributeError as e:
-      return f"Error: Invalid ticker symbol '{stock_ticker}' or information not available"
-  except Exception as e:
-      return f"Error retrieving stock information for {stock_ticker}: {str(e)}"
+    """
+    Tool to fetch fundamental information about a stock ticker from Yahoo Finance.
+    
+    Args:
+        stock_ticker: Stock ticker symbol (e.g., "AAPL", "MSFT").
+    
+    Returns:
+        str: A formatted string containing key information about the company including:
+             company name, industry, sector, market cap, price metrics, dividend information,
+             and business summary.
+    """
+    try:
+        # Get stock information using yfinance
+        ticker = yf.Ticker(stock_ticker)
+        
+        # Extract relevant information
+        company_info = ticker.info
+        
+        # Select only the most relevant fields
+        relevant_keys = [
+            'shortName', 'longName', 'industry', 'sector', 'website', 
+            'marketCap', 'previousClose', 'open', 'dayLow', 'dayHigh',
+            'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'volume', 'averageVolume',
+            'dividendRate', 'dividendYield', 'trailingPE', 'forwardPE',
+            'city', 'state', 'country', 'fullTimeEmployees', 'longBusinessSummary'
+        ]
+        
+        # Format the information in a more readable way
+        formatted_info = []
+        
+        # First add company name and key financial info
+        if 'longName' in company_info:
+            formatted_info.append(f"Company: {company_info.get('longName')}")
+        elif 'shortName' in company_info:
+            formatted_info.append(f"Company: {company_info.get('shortName')}")
+            
+        # Add other key information
+        for key in relevant_keys:
+            if key in company_info and company_info[key] is not None:
+                # Format some fields specially
+                if key == 'marketCap':
+                    value = f"${company_info[key]/1000000000:.1f}B" if company_info[key] < 1000000000000 else f"${company_info[key]/1000000000000:.1f}T"
+                    formatted_info.append(f"Market Cap: {value}")
+                elif key == 'fiftyTwoWeekLow' and 'fiftyTwoWeekHigh' in company_info:
+                    formatted_info.append(f"52 Week Range: ${company_info['fiftyTwoWeekLow']:.2f} - ${company_info['fiftyTwoWeekHigh']:.2f}")
+                elif key == 'fiftyTwoWeekHigh':
+                    # Skip as it's handled with fiftyTwoWeekLow
+                    pass
+                elif key == 'dividendYield' and company_info[key]:
+                    formatted_info.append(f"Dividend Yield: {company_info[key]*100:.2f}%")
+                elif key == 'longBusinessSummary':
+                    formatted_info.append(f"\nBusiness Summary:\n{company_info[key]}")
+                elif key not in ['shortName', 'longName']:  # Avoid duplication
+                    # Format the key for better readability
+                    formatted_key = ' '.join(word.capitalize() for word in key.split('_'))
+                    formatted_key = ''.join(word[0].upper() + word[1:] for word in formatted_key.split())
+                    formatted_info.append(f"{formatted_key}: {company_info[key]}")
+        
+        if not formatted_info:
+            return f"No detailed information available for {stock_ticker}"
+            
+        return f"Background information for {stock_ticker}:\n" + "\n".join(formatted_info)
+    except AttributeError:
+        return f"Error: Invalid ticker symbol '{stock_ticker}' or information not available"
+    except Exception as e:
+        logger.error(f"Error in stock_info for {stock_ticker}: {str(e)}")
+        return f"Error retrieving stock information for {stock_ticker}: {str(e)}"
 
 @stock_mcp.tool()
 def income_statement(stock_ticker: str, period: str = "quarterly") -> str:
