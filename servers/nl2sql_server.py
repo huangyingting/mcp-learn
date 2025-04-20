@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("nl2sql")
 
 # SQLite database file path
-SQLITE_DB_PATH = "chinook.db"
+SQLITE_DB_PATH = "data/chinook.db"
 
 @asynccontextmanager
 async def app_lifespan(server: FastMCP) -> AsyncIterator[dict]:

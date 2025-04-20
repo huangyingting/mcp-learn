@@ -92,14 +92,19 @@ To connect to an SSE server:
 uv run clients/client.py http://localhost:8000/sse
 ```
 
-### Using the Client
-
 Once connected, you can interact with the client by typing in queries. For example:
 
 - Weather server: "What's the weather forecast for latitude 40.7, longitude -74.0?" or "Are there any weather alerts in CA?"
 - Stock server: "What's the current price of AAPL?" or "Give me information about Google's stock"
 
 Type `quit` or `exit` to end your session.
+
+### Use the Agent
+The agent is located in the [`agents/`](agents/) directory. To run the agent, use the following command:
+
+```bash
+uv run chainlit run clients/chainlit_client.py --port 9000
+```
 
 ## Available MCP servers
 
