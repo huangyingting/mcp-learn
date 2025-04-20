@@ -99,11 +99,22 @@ Once connected, you can interact with the client by typing in queries. For examp
 
 Type `quit` or `exit` to end your session.
 
+For the chainlit client, you can run it with the following command:
+```bash
+uv run chainlit run clients/chainlit_client.py --port 9000
+```
+Then, open your web browser and navigate to `http://localhost:9000` to interact with the client.
+
 ### Use the Agent
 The agent is located in the [`agents/`](agents/) directory. To run the agent, use the following command:
 
+To run semantic kernel agent
 ```bash
-uv run chainlit run clients/chainlit_client.py --port 9000
+uv run agents/sk_agent.py
+```
+To run langgraph agent
+```bash
+uv run agents/langgraph_agent.py
 ```
 
 ## Available MCP servers
