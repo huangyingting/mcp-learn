@@ -117,6 +117,10 @@ To run langgraph agent
 ```bash
 uv run agents/langgraph_agent.py
 ```
+To run autogen agent
+```bash
+uv run agents/autogen_agent.py
+```
 
 ## Available MCP servers
 
