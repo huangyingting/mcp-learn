@@ -13,6 +13,8 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 ### Agents that use MCP
 - A langgraph agent that uses MCP to call external tools ([`agents/langgraph_agent.py`](agents/langgraph_agent.py))
 - A semantic kernel agent that uses MCP to call external tools ([`agents/sk_agent.py`](agents/sk_agent.py))
+- An autogen agent that uses MCP to call external tools ([`agents/autogen_agent.py`](agents/autogen_agent.py))
+- An openai agent that uses MCP to call external tools ([`agents/openai_agent.py`](agents/openai_agent.py))
 
 ### MCP servers
 - A weather information server that provides weather forecasts and alerts ([`servers/weather_server.py`](servers/weather_server.py))
@@ -120,6 +122,10 @@ uv run agents/langgraph_agent.py
 To run autogen agent
 ```bash
 uv run agents/autogen_agent.py
+```
+To run openai agent
+```bash
+uv run agents/openai_agent.py
 ```
 
 ## Available MCP servers

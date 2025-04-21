@@ -18,6 +18,7 @@ dependencies = [
     "mcp>=1.6.0",
     "mlflow>=2.21.3",
     "openai>=1.75.0",
+    "openai-agents>=0.0.11",
     "pytz>=2025.2",
     "streamlit>=1.44.1",
     "tenacity>=9.1.2",
