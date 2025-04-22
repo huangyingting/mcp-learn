@@ -1,9 +1,5 @@
-# Copyright (c) Microsoft. All rights reserved.
-
 import asyncio
 import os
-from pathlib import Path
-
 from semantic_kernel.agents import ChatCompletionAgent, ChatHistoryAgentThread
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from semantic_kernel.connectors.mcp import MCPStdioPlugin

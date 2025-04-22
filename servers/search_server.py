@@ -5,8 +5,6 @@ from fastmcp import FastMCP
 import httpx
 import os
 from dotenv import load_dotenv
-import datetime
-import pytz
 
 load_dotenv()
 

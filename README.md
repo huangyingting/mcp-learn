@@ -16,6 +16,7 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 - An autogen agent that uses MCP to call external tools ([`agents/autogen_agent.py`](agents/autogen_agent.py))
 - An openai agent that uses MCP to call external tools ([`agents/openai_agent.py`](agents/openai_agent.py))
 - An ADK(google) agent that uses MCP to call external tools ([`agents/adk_agent`](agents/adk_agent))
+- A pydantic agent that uses MCP to call external tools ([`agents/pydantic_agent.py`](agents/pydantic_agent.py))
 
 ### MCP servers
 - A weather information server that provides weather forecasts and alerts ([`servers/weather_server.py`](servers/weather_server.py))
@@ -63,9 +64,7 @@ All MCP servers are located in the [`servers/`](servers/) directory. For example
 To start a server with SSE transport:
 
 ```bash
-uv run servers/weather_server.py -t sse
-# OR
-uv run servers/stock_server.py -t sse
+uv run servers/any_mcp_server.py -t sse
 ```
 
 When using the SSE transport, the server starts on http://localhost:8000/sse by default.
@@ -83,10 +82,6 @@ Client are located in the [`clients/`](clients/) directory. The client can conne
 To connect to a stdio server:
 
 ```bash
-uv run clients/client.py servers/weather_server.py
-# OR
-uv run clients/client.py servers/stock_server.py
-# OR
 uv run clients/client.py servers/any_mcp_server.py
 ```
 
@@ -134,6 +129,11 @@ uv run adk web --port 9000
 ```
 Then, open your web browser and navigate to `http://localhost:9000` to interact with the agent through adk web.
 
+To run pydantic agent
+```bash
+uv run agents/pydantic_agent.py
+```
+
 ## Available MCP servers
 
 ### Weather Server
@@ -161,3 +161,8 @@ Then, open your web browser and navigate to `http://localhost:9000` to interact 
 
 ### Search Server
 - `web_search`: Search the web for a given query
+
+### News Server
+- `news_top_headlines`: Get top headlines from NewsAPI.
+- `news_search`: Search for news articles using NewsAPI.
+- `news_sources`: Get available news sources from 
