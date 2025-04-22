@@ -15,6 +15,7 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 - A semantic kernel agent that uses MCP to call external tools ([`agents/sk_agent.py`](agents/sk_agent.py))
 - An autogen agent that uses MCP to call external tools ([`agents/autogen_agent.py`](agents/autogen_agent.py))
 - An openai agent that uses MCP to call external tools ([`agents/openai_agent.py`](agents/openai_agent.py))
+- An ADK(google) agent that uses MCP to call external tools ([`agents/adk_agent`](agents/adk_agent))
 
 ### MCP servers
 - A weather information server that provides weather forecasts and alerts ([`servers/weather_server.py`](servers/weather_server.py))
@@ -127,6 +128,11 @@ To run openai agent
 ```bash
 uv run agents/openai_agent.py
 ```
+To run ADK agent
+```bash
+uv run adk web --port 9000
+```
+Then, open your web browser and navigate to `http://localhost:9000` to interact with the agent through adk web.
 
 ## Available MCP servers
 
