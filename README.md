@@ -1,6 +1,6 @@
-# MCP Learn - Model Control Protocol Examples
+# MCP Learn - Model Context Protocol Examples
 
-This repository contains examples of using the Model Control Protocol (MCP).
+This repository contains examples of using the Model Context Protocol (MCP).
 
 ## Overview
 
