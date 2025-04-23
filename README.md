@@ -134,6 +134,11 @@ To run pydantic agent
 uv run agents/pydantic_agent.py
 ```
 
+To run agno agent
+```bash
+uv run agents/agno_agent.py
+```
+
 ## Available MCP servers
 
 ### Weather Server

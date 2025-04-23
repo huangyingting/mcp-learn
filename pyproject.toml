@@ -5,6 +5,7 @@ description = "MCP learn"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "agno>=1.3.5",
     "autogen>=0.5.3",
     "autogen-agentchat>=0.5.3",
     "autogen-ext[azure,mcp,openai]>=0.5.3",
