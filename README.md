@@ -17,6 +17,9 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 - An openai agent that uses MCP to call external tools ([`agents/openai_agent.py`](agents/openai_agent.py))
 - An ADK(google) agent that uses MCP to call external tools ([`agents/adk_agent`](agents/adk_agent))
 - A pydantic agent that uses MCP to call external tools ([`agents/pydantic_agent.py`](agents/pydantic_agent.py))
+- An agno agent that uses MCP to call external tools ([`agents/agno_agent.py`](agents/agno_agent.py))
+- A smolagents agent that uses MCP to call external tools ([`agents/smol_agent.py`](agents/smol_agent.py))
+- An atomic agent that uses MCP to call external tools ([`agents/atomic_agent.py`](agents/atomic_agent.py))
 
 ### MCP servers
 - A weather information server that provides weather forecasts and alerts ([`servers/weather_server.py`](servers/weather_server.py))
@@ -137,6 +140,15 @@ uv run agents/pydantic_agent.py
 To run agno agent
 ```bash
 uv run agents/agno_agent.py
+```
+
+To run smolagents agent
+```bash
+uv run agents/smol_agent.py
+```
+To run atomic agent
+```bash
+uv run agents/atomic_agent.py
 ```
 
 ## Available MCP servers
