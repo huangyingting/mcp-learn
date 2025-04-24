@@ -3,7 +3,7 @@ import sqlite3
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
 import logging
-import sys
+import os
 import asyncio
 from fastmcp import Context, FastMCP
 
