@@ -107,6 +107,13 @@ uv run chainlit run clients/chainlit_client.py --port 9000
 ```
 Then, open your web browser and navigate to `http://localhost:9000` to interact with the client.
 
+For the streamlit client, you can run it with the following command:
+```bash
+uv run streamlit run clients/streamlit_client.py
+```
+Then, open your web browser and navigate to `http://localhost:8501` to interact with the client.
+
+
 ### Use the Agent
 The agent is located in the [`agents/`](agents/) directory. To run the agent, use the following command:
 
