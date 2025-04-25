@@ -9,6 +9,7 @@ MCP allows Large Language Models (LLMs) to call external tools via a standardize
 ### MCP clients
 - A cmdline client that can connect to any MCP server ([`clients/cmd_client.py`](clients/cmd_client.py))
 - A chainlit client that can connect to any MCP server ([`clients/chainlit_client.py`](clients/chainlit_client.py))
+- A streamlit client that can connect to any MCP server ([`clients/streamlit_client.py`](clients/streamlit_client.py))
 
 ### Agents that use MCP
 - A langgraph agent that uses MCP to call external tools ([`agents/langgraph_agent.py`](agents/langgraph_agent.py))
@@ -78,7 +79,7 @@ There is a composite server that aggregates all MCP servers. To start the compos
 uv run servers/composite_server.py -t sse
 ```
 
-### Client Examples
+### Connecting with a client
 
 MCP clients are located in the [`clients/`](clients/) directory. There are three client implementations available:
 
@@ -127,46 +128,52 @@ uv run streamlit run clients/streamlit_client.py
 
 Then navigate to `http://localhost:8501` in your web browser to interact with the client.
 
-### Use the Agent
-The agent is located in the [`agents/`](agents/) directory. To run the agent, use the following command:
+### Running the Agents
 
-To run semantic kernel agent
+The agents are located in the [`agents/`](agents/) directory. Each agent demonstrates how to integrate MCP with different agent frameworks.
+
+#### Semantic Kernel Agent
 ```bash
 uv run agents/sk_agent.py
 ```
-To run langgraph agent
+
+#### LangGraph Agent
 ```bash
 uv run agents/langgraph_agent.py
 ```
-To run autogen agent
+
+#### AutoGen Agent
 ```bash
 uv run agents/autogen_agent.py
 ```
-To run openai agent
+
+#### OpenAI Agent
 ```bash
 uv run agents/openai_agent.py
 ```
-To run ADK agent
+
+#### Google ADK Agent
 ```bash
 uv run adk web --port 9000
 ```
-Then, open your web browser and navigate to `http://localhost:9000` to interact with the agent through adk web.
+Then, open your web browser and navigate to `http://localhost:9000` to interact with the agent through ADK's web interface.
 
-To run pydantic agent
+#### Pydantic Agent
 ```bash
 uv run agents/pydantic_agent.py
 ```
 
-To run agno agent
+#### Agno Agent
 ```bash
 uv run agents/agno_agent.py
 ```
 
-To run smolagents agent
+#### SmolAgents Agent
 ```bash
 uv run agents/smol_agent.py
 ```
-To run atomic agent
+
+#### Atomic Agent
 ```bash
 uv run agents/atomic_agent.py
 ```
