@@ -78,41 +78,54 @@ There is a composite server that aggregates all MCP servers. To start the compos
 uv run servers/composite_server.py -t sse
 ```
 
-### Connecting the Client
+### Client Examples
 
-Client are located in the [`clients/`](clients/) directory. The client can connect to either a Python script server (stdio) or an SSE server:
+MCP clients are located in the [`clients/`](clients/) directory. There are three client implementations available:
 
-To connect to a stdio server:
+#### Command Line Client
+
+The command line client (`cmd_client.py`) provides a simple text interface and can connect to either:
+- A Python script server (stdio transport)
+- An SSE web server
+
+**To connect to a stdio server:**
 
 ```bash
-uv run clients/client.py servers/any_mcp_server.py
+uv run clients/cmd_client.py servers/any_mcp_server.py
 ```
 
-To connect to an SSE server:
+**To connect to an SSE server:**
 
 ```bash
-uv run clients/client.py http://localhost:8000/sse
+uv run clients/cmd_client.py http://localhost:8000/sse
 ```
 
-Once connected, you can interact with the client by typing in queries. For example:
+Once connected, you can interact with the server through natural language queries. For example:
 
-- Weather server: "What's the weather forecast for latitude 40.7, longitude -74.0?" or "Are there any weather alerts in CA?"
-- Stock server: "What's the current price of AAPL?" or "Give me information about Google's stock"
+- Weather queries: "What's the weather forecast for latitude 40.7, longitude -74.0?" or "Are there any weather alerts in CA?"
+- Stock queries: "What's the current price of AAPL?" or "Give me information about Google's stock"
 
 Type `quit` or `exit` to end your session.
 
-For the chainlit client, you can run it with the following command:
+#### Chainlit Client
+
+The Chainlit client (`chainlit_client.py`) provides a chat interface with message history and a more interactive experience:
+
 ```bash
 uv run chainlit run clients/chainlit_client.py --port 9000
 ```
-Then, open your web browser and navigate to `http://localhost:9000` to interact with the client.
 
-For the streamlit client, you can run it with the following command:
+Then navigate to `http://localhost:9000` in your web browser to interact with the client.
+
+#### Streamlit Client
+
+The Streamlit client (`streamlit_client.py`) offers a web-based interface with additional UI capabilities:
+
 ```bash
 uv run streamlit run clients/streamlit_client.py
 ```
-Then, open your web browser and navigate to `http://localhost:8501` to interact with the client.
 
+Then navigate to `http://localhost:8501` in your web browser to interact with the client.
 
 ### Use the Agent
 The agent is located in the [`agents/`](agents/) directory. To run the agent, use the following command:
@@ -189,4 +202,4 @@ uv run agents/atomic_agent.py
 ### News Server
 - `news_top_headlines`: Get top headlines from NewsAPI.
 - `news_search`: Search for news articles using NewsAPI.
-- `news_sources`: Get available news sources from 
+- `news_sources`: Get available news sources from
