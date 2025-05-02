@@ -1,0 +1,35 @@
+name: Gitee Sync
+run-name: "🎭🔃♾️[${{ github.workflow }}] - ${{ github.event.head_commit.message }}"
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow}}
+  cancel-in-progress: true
+
+env:
+  GITEE_REPOSITORY: ${{ github.repository }}
+jobs:
+  sync_to_gitee:
+    runs-on: ubuntu-latest
+    steps:
+
+      # - name: sync-gitee-mirror
+      #   uses: abersheeran/sync-gitee-mirror@v1-beta
+      #   # https://github.com/abersheeran/sync-gitee-mirror
+      #   with:
+      #     repository: ${{ env.GITEE_REPOSITORY }}
+      #     username: ${{ secrets.GITEE_USERNAME }}
+      #     password: ${{ secrets.GITEE_PAT }}
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          remote_repo="https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_PAT }}@gitee.com/${{ env.GITEE_REPOSITORY }}.git"
+          git remote add gitee "${remote_repo}"
+          branch=$(git branch --show-current)
+          git push gitee $branch -f
