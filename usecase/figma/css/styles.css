@@ -1,0 +1,349 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+}
+
+.btn:hover {
+    background-color: #333333;
+}
+
+/* Header/Navigation Styles */
+.nav-header {
+    height: 164px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.main-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
+
+.main-nav li {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.mobile-toggle {
+    display: none;
+}
+
+/* About Section Styles */
+.about-section {
+    padding: 80px 0;
+}
+
+.about-content {
+    display: flex;
+    gap: 64px;
+}
+
+.about-copy {
+    flex: 1;
+}
+
+.about-image {
+    flex: 1;
+}
+
+h1 {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.21;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #828282;
+    margin-bottom: 24px;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+/* Contact Section Styles */
+.contact-section {
+    padding: 80px 0;
+}
+
+.contact-heading h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 32px;
+}
+
+.contact-form {
+    max-width: 626px;
+}
+
+.form-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 32px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #828282;
+    background-color: #ffffff;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 16px 32px;
+}
+
+/* Footer Styles */
+.site-footer {
+    padding: 48px 0;
+    background-color: #ffffff;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+
+.footer-brand h3 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 24px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 8px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+}
+
+.social-icon img {
+    width: 24px;
+    height: 24px;
+    border-radius: 0;
+}
+
+.footer-links {
+    display: flex;
+    gap: 32px;
+}
+
+.footer-column {
+    min-width: 187px;
+    text-align: right;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+.footer-column ul li {
+    margin-bottom: 24px;
+}
+
+.footer-column ul li a {
+    font-size: 16px;
+    font-weight: 500;
+    color: #454545;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #000000;
+}
+
+.footer-divider {
+    height: 1px;
+    background-color: #E6E6E6;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .about-content {
+        flex-direction: column-reverse;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 48px;
+    }
+    
+    .footer-links {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .footer-column {
+        text-align: left;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-content {
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+    }
+    
+    .nav-header {
+        height: auto;
+        padding: 24px 0;
+    }
+    
+    .main-nav {
+        display: none;
+        width: 100%;
+    }
+    
+    .main-nav.active {
+        display: block;
+    }
+    
+    .main-nav ul {
+        gap: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .mobile-toggle {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    
+    h1 {
+        font-size: 48px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 0;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-nav ul {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+    
+    h1 {
+        font-size: 36px;
+    }
+}
