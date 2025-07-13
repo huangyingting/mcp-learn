@@ -55,14 +55,14 @@ async def get_alerts(state: str) -> str:
   data = await make_nws_request(url)
 
   if not data or "features" not in data:
-      logger.warning(
-          f"Failed to fetch alerts or malformed response for state: {state}")
-      return "Unable to fetch alerts or no alerts found."
+    logger.warning(
+        f"Failed to fetch alerts or malformed response for state: {state}")
+    return "Unable to fetch alerts or no alerts found."
 
   features = data.get("features", [])
   if not features:
-      logger.info(f"No active alerts for state: {state}")
-      return "No active alerts for this state."
+    logger.info(f"No active alerts for state: {state}")
+    return "No active alerts for this state."
 
   alerts = [format_alert(feature) for feature in features]
   logger.debug(f"Found {len(alerts)} alert(s) for state: {state}")
@@ -117,7 +117,7 @@ async def get_forecast(latitude: float, longitude: float) -> str:
 # To run the server with sse transport "uv run weather_server.py -t sse"
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="weather mcp server")
-  parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
-                      help="MCP transport to use (stdio or sse)")
+  parser.add_argument("--transport", "-t", choices=["stdio", "sse", "http"], default="stdio",
+                      help="MCP transport to use (stdio or sse or http)")
   args = parser.parse_args()
   weather_mcp.run(transport=args.transport)

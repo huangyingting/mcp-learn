@@ -198,7 +198,7 @@ def news_sources(
 # Run the server
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="News MCP server")
-  parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
-                      help="MCP transport to use (stdio or sse)")
+  parser.add_argument("--transport", "-t", choices=["stdio", "sse", "http"], default="stdio",
+                      help="MCP transport to use (stdio or sse or http)")
   args = parser.parse_args()
   news_mcp.run(transport=args.transport)

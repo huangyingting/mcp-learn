@@ -410,7 +410,7 @@ def income_statement(stock_ticker: str, period: str = "quarterly") -> str:
 # To run the server with sse transport "uv run stock_server.py -t sse"
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="stock mcp server")
-  parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
-                      help="MCP transport to use (stdio or sse)")
+  parser.add_argument("--transport", "-t", choices=["stdio", "sse", "http"], default="stdio",
+                      help="MCP transport to use (stdio or sse or http)")
   args = parser.parse_args()
   stock_mcp.run(transport=args.transport)

@@ -6,11 +6,13 @@ from dotenv import load_dotenv
 from mcp import ClientSession
 from mcp.client.stdio import stdio_client, StdioServerParameters
 from mcp.client.sse import sse_client
+from mcp.client.streamable_http import streamablehttp_client
 from openai import AzureOpenAI
 import logging
 from colorama import Fore, Style, init as colorama_init
 
 colorama_init(autoreset=True)
+
 
 class ColorFormatter(logging.Formatter):
   COLORS = {
@@ -29,6 +31,7 @@ class ColorFormatter(logging.Formatter):
 # import mlflow
 # mlflow.autolog()
 
+
 # Set up logging with color
 logger = logging.getLogger("client")
 logger.setLevel(logging.DEBUG)
@@ -40,6 +43,7 @@ load_dotenv()
 
 MODEL = os.getenv("AZURE_OPENAI_DEPLOYMENT") or "gpt-4o"
 MAX_TOKENS = 4096
+
 
 class MCPClient:
   def __init__(self):
@@ -77,11 +81,25 @@ class MCPClient:
         f"Connection to server with tools: {[tool.name for tool in self.available_tools]}")
 
   async def connect_to_sse_server(self, server_url: str):
-    # Store the context managers so they stay alive
     self._streams_context = sse_client(url=server_url)
     streams = await self._streams_context.__aenter__()
 
     self._session_context = ClientSession(*streams)
+    self.session: ClientSession = await self._session_context.__aenter__()
+
+    await self.session.initialize()
+
+    response = await self.session.list_tools()
+    self.available_tools = response.tools
+    logger.debug(
+        f"Connection to server with tools: {[tool.name for tool in self.available_tools]}"
+    )
+
+  async def connect_to_http_server(self, server_url: str):
+    self._streams_context = streamablehttp_client(url=server_url)
+    read_stream, write_stream, _ = await self._streams_context.__aenter__()
+
+    self._session_context = ClientSession(read_stream, write_stream)
     self.session: ClientSession = await self._session_context.__aenter__()
 
     await self.session.initialize()
@@ -188,9 +206,13 @@ async def main(argv: Sequence[str]) -> None:
   if len(sys.argv) < 2:
     print("Usage:")
     print("  To connect to a Python script server:")
-    print("    uv run client.py <path_to_server_script.py>")
+    print("    uv run cmd_client.py <path_to_server_script.py>")
     print("  To connect to an SSE server:")
-    print("    uv run client.py <URL of SSE MCP server (e.g., http://localhost:8000/sse)>")
+    print(
+        "    uv run cmd_client.py {URL of SSE MCP server (e.g., http://localhost:8000/sse)}")
+    print("  To connect to a streamable HTTP server:")
+    print(
+        "    uv run cmd_client.py {URL of Streamable HTTP MCP server (e.g., http://localhost:8000/mcp)}")
     sys.exit(1)
 
   arg = sys.argv[1]
@@ -200,9 +222,15 @@ async def main(argv: Sequence[str]) -> None:
     if arg.endswith(".py"):
       await client.connect_to_server(arg)
     elif arg.startswith("http"):
-      await client.connect_to_sse_server(server_url=arg)
+      if arg.endswith("/sse"):
+        await client.connect_to_sse_server(server_url=arg)
+      elif arg.endswith("/mcp"):
+        await client.connect_to_http_server(server_url=arg)
+      else:
+        print("Error: HTTP URL must end with either '/sse' or '/mcp'")
+        sys.exit(1)
     else:
-      print("Error: Argument must be either a .py file path or an HTTP(S) URL")
+      print("Error: Argument must be either a .py file path or a HTTP(S) URL")
       sys.exit(1)
 
     await client.chat_loop()
@@ -210,10 +238,10 @@ async def main(argv: Sequence[str]) -> None:
     await client.cleanup()
 
 # Example usage:
-# uv run client.py weather_server.py, or
-# uv run client.py http://localhost:8000/sse
+# uv run cmd_client.py weather_server.py, or
+# uv run cmd_client.py http://localhost:8000/sse
+# uv run cmd_client.py http://localhost:8000/mcp
 if __name__ == "__main__":
   import asyncio
   import sys
-
   asyncio.run(main(sys.argv))

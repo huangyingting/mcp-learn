@@ -14,6 +14,7 @@ logger = logging.getLogger("nl2sql")
 # SQLite database file path
 SQLITE_DB_PATH = "data/chinook.db"
 
+
 @asynccontextmanager
 async def app_lifespan(server: FastMCP) -> AsyncIterator[dict]:
   """Manage application lifecycle with type-safe context for SQLite"""
@@ -211,7 +212,7 @@ async def database_info(ctx: Context) -> str:
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="nl2sql server")
-  parser.add_argument("--transport", "-t", choices=["stdio", "sse"], default="stdio",
-                      help="MCP transport to use (stdio or sse)")
+  parser.add_argument("--transport", "-t", choices=["stdio", "sse", "http"], default="stdio",
+                      help="MCP transport to use (stdio or sse or http)")
   args = parser.parse_args()
   nl2sql_mcp.run(transport=args.transport)
