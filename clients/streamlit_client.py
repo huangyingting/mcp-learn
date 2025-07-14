@@ -254,7 +254,7 @@ async def close_mcp_client():
   if "mcp_client" in st.session_state and st.session_state.mcp_client is not None:
     try:
 
-      await st.session_state.mcp_client.__aexit__(None, None, None)
+      # await st.session_state.mcp_client.__aexit__(None, None, None)
       st.session_state.mcp_client = None
     except Exception as e:
       import traceback
@@ -472,12 +472,11 @@ async def setup_session(mcp_server_address):
         {
             "mcp_server": {
                 "url": mcp_server_address,
-                "transport": "sse",
+                "transport": "streamable_http",
             }
         }
     )
-    await client.__aenter__()
-    tools = client.get_tools()
+    tools = await client.get_tools()
     st.session_state.tools = tools  # Store tools in session state
     st.session_state.mcp_client = client
 
